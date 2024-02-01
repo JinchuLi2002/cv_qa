@@ -1,0 +1,80 @@
+# General
+.DS_Store            # macOS folder attribute files
+Thumbs.db            # Windows image file cache
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Packages #
+############
+# it's better to exclude the node_modules folder
+# as dependencies should be installed through the package manager
+node_modules/
+vendor/
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+
+# OS generated files #
+######################
+._*
+.Spotlight-V100
+.Trashes
+
+# Editors and IDEs #
+####################
+.vscode/
+.vs/
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+
+# Build output #
+################
+bin/
+obj/
+out/
+build/
+dist/
+*.csproj.user
+*.pid
+*.pid.lock
+*.seed
+*.swo
+*.swp
+*.tgz
+*.tmp
+
+# Dependency directories
+vendor/
+Gopkg.lock
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# dotenv environment variable files
+.env
+.env.test
+
+# Misc #
+########
+*.bak
+*.swp
+*.orig
