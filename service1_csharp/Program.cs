@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Net.WebSockets;
+using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,26 +11,42 @@ namespace Service1CSharp
     {
         static async Task Main(string[] args)
         {
-            // Start the WebSocket server part (handle this in another method or class)
-
-            // Start the client part to connect to the Go server
-            using (ClientWebSocket client = new ClientWebSocket())
+            // Start the client part to send an HTTP POST request to the Go server
+            using (HttpClient httpClient = new HttpClient())
             {
-                Uri serverUri = new Uri("ws://localhost:5001/ws"); // Go server URL
-                await client.ConnectAsync(serverUri, CancellationToken.None);
-                Console.WriteLine("Connected to the Go server");
+                Uri serverUri = new Uri("http://go-server:5001/api/send"); // Updated URL
+                Console.WriteLine("Sending HTTP POST request to the Go server");
 
-                var timer = new Timer(async _ =>
+                while (true) // Run indefinitely
                 {
                     var number = new Random().Next(1, 100);
                     Console.WriteLine($"Sending to Go server: {number}");
 
-                    var bytes = Encoding.UTF8.GetBytes(number.ToString());
-                    var arraySegment = new ArraySegment<byte>(bytes);
-                    await client.SendAsync(arraySegment, WebSocketMessageType.Text, true, CancellationToken.None);
-                }, null, TimeSpan.Zero, TimeSpan.FromSeconds(5)); // Adjust the period as needed
+                    var data = new
+                    {
+                        Data = number // Match the field name in your Go struct
+                    };
 
-                Console.ReadLine(); // Keep the application running
+                    var jsonString = JsonSerializer.Serialize(data);
+                    var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+                    // Send the HTTP POST request
+                    var response = await httpClient.PostAsync(serverUri, content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Read and display the response if needed
+                        var responseContent = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine($"Response from Go server: {responseContent}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"HTTP request failed with status code: {response.StatusCode}");
+                    }
+
+                    // Delay for 5 seconds before sending the next request
+                    await Task.Delay(TimeSpan.FromSeconds(5));
+                }
             }
         }
     }

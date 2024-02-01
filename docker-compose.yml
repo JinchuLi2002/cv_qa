@@ -9,3 +9,8 @@ services:
     build: ./service1_csharp
     ports:
       - "5002:5002"
+  
+  vue-app:
+    build: ./frontend_vue/demo
+    ports:
+      - "8080:80"
