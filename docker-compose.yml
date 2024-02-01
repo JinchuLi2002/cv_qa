@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  go-server:
+    build: ./service2_go
+    ports:
+      - "5001:5001"
+
+  csharp-server:
+    build: ./service1_csharp
+    ports:
+      - "5002:5002"
