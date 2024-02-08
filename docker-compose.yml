@@ -1,14 +1,49 @@
 version: '3.8'
 services:
-  go-server:
-    build: ./service2_go
+  base-csharp:
+      build:
+        context: ./base_csharp
+      image: base-csharp:latest
+
+  go:
+    build: ./service0_go
     ports:
       - "5001:5001"
 
-  csharp-server:
+  cs_1:
     build: ./service1_csharp
+    depends_on:
+      - base-csharp
     ports:
       - "5002:5002"
+  
+  cs_2:
+    build: ./service2_csharp
+    depends_on:
+      - base-csharp
+    ports:
+      - "5003:5003"
+  
+  cs_3:
+    build: ./service3_csharp
+    depends_on:
+      - base-csharp
+    ports:
+      - "5004:5004"
+  
+  cs_4:
+    build: ./service4_csharp
+    depends_on:
+      - base-csharp
+    ports:
+      - "5005:5005"
+  
+  cs_5:
+    build: ./service5_csharp
+    depends_on:
+      - base-csharp
+    ports:
+      - "5006:5006"
   
   vue-app:
     build: ./frontend_vue/demo
